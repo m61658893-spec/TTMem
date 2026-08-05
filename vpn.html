@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTMem VPN</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
+        body{background:#0a0a0a;display:flex;justify-content:center;align-items:center;height:100vh}
+        .vpn-card{background:#1a1a1a;padding:24px;border-radius:16px;max-width:340px;width:100%;border:1px solid #2a2a2a;text-align:center}
+        .vpn-card h2{color:#fff;font-size:20px;margin-bottom:12px}
+        .vpn-card h2 span{color:#e63946}
+        .status{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#0a0a0a;border-radius:10px;margin:12px 0}
+        .dot{width:14px;height:14px;border-radius:50%}
+        .dot.off{background:#ff4444;box-shadow:0 0 10px #ff444466}
+        .dot.on{background:#4caf50;box-shadow:0 0 10px #4caf5066}
+        .dot.connecting{background:#ff9800;box-shadow:0 0 10px #ff980066;animation:blink 0.6s infinite alternate}
+        @keyframes blink{0%{opacity:0.4}100%{opacity:1}}
+        .info{color:#fff;font-size:15px;font-weight:600}
+        .country{color:#888;font-size:13px;margin-top:4px}
+        .btn{width:100%;padding:12px;border:0;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;transition:0.2s;color:#fff}
+        .btn:active{transform:scale(0.97)}
+        .btn-off{background:linear-gradient(135deg,#e63946,#c62828)}
+        .btn-on{background:linear-gradient(135deg,#4caf50,#2e7d32)}
+        .btn-connecting{background:linear-gradient(135deg,#ff9800,#e65100)}
+        .stats{display:flex;gap:8px;margin:10px 0;color:#888;font-size:12px;justify-content:center}
+        .stats span{color:#fff}
+        .log{color:#444;font-size:11px;margin-top:8px;padding:8px;background:#0a0a0a;border-radius:6px;min-height:30px}
+    </style>
+</head>
+<body>
+<div class="vpn-card">
+    <h2>🌐 TT<span>Mem</span> VPN</h2>
+    <div class="status">
+        <div class="dot off" id="vpnDot"></div>
+        <div>
+            <div class="info" id="vpnInfo">Отключен</div>
+            <div class="country" id="vpnCountry">—</div>
+        </div>
+    </div>
+    <button class="btn btn-off" id="vpnBtn" onclick="toggleVPN()">Подключиться</button>
+    <div class="stats">
+        <div>Скорость: <span id="speed">0</span> Mbps</div>
+        <div>Пинг: <span id="ping">0</span> ms</div>
+    </div>
+    <div class="log" id="vpnLog">⏳ Готов к подключению</div>
+</div>
+<script>
+let vpnActive=false;
+let vpnInterval=null;
+const countries=['🇺🇸 США','🇬🇧 Великобритания','🇩🇪 Германия','🇫🇷 Франция','🇯🇵 Япония','🇳🇱 Нидерланды','🇨🇦 Канада','🇦🇺 Австралия','🇨🇭 Швейцария','🇸🇪 Швеция'];
+
+function toggleVPN(){
+    const dot=document.getElementById('vpnDot');
+    const info=document.getElementById('vpnInfo');
+    const country=document.getElementById('vpnCountry');
+    const btn=document.getElementById('vpnBtn');
+    const log=document.getElementById('vpnLog');
+    const speed=document.getElementById('speed');
+    const ping=document.getElementById('ping');
+
+    if(!vpnActive){
+        vpnActive=true;
+        dot.className='dot connecting';
+        info.textContent='Подключение...';
+        btn.textContent='Подключение...';
+        btn.className='btn btn-connecting';
+        log.textContent='🔄 Установка защищённого соединения...';
+        
+        setTimeout(()=>{
+            const c=countries[Math.floor(Math.random()*countries.length)];
+            const sp=Math.floor(Math.random()*80+20);
+            const p=Math.floor(Math.random()*60+10);
+            dot.className='dot on';
+            info.textContent='Защищено';
+            country.textContent=c;
+            btn.textContent='Отключиться';
+            btn.className='btn btn-on';
+            log.textContent='✅ Подключено через '+c+' • IP защищён';
+            speed.textContent=sp;
+            ping.textContent=p;
+            if(vpnInterval) clearInterval(vpnInterval);
+            vpnInterval=setInterval(()=>{
+                speed.textContent=Math.floor(Math.random()*80+20);
+                ping.textContent=Math.floor(Math.random()*60+10);
+            },3000);
+        },1500);
+    }else{
+        vpnActive=false;
+        dot.className='dot off';
+        info.textContent='Отключен';
+        country.textContent='—';
+        btn.textContent='Подключиться';
+        btn.className='btn btn-off';
+        log.textContent='⏳ VPN отключён';
+        speed.textContent='0';
+        ping.textContent='0';
+        if(vpnInterval){clearInterval(vpnInterval);vpnInterval=null;}
+    }
+}
+</script>
+</body>
+</html>
