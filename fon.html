@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фон TTMem</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #0a0a0a;
+        }
+        .bg {
+            width: 400px;
+            height: 700px;
+            background: radial-gradient(circle at 20% 30%, #1a1a2e, #0a0a0a 80%);
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: system-ui;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(230, 57, 70, 0.15);
+            border: 1px solid rgba(230, 57, 70, 0.1);
+        }
+        .bg::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(230, 57, 70, 0.15), transparent 70%);
+            top: -50px;
+            right: -50px;
+        }
+        .bg::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(230, 57, 70, 0.08), transparent 70%);
+            bottom: 20px;
+            left: -30px;
+        }
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            z-index: 1;
+            background: linear-gradient(135deg, #fff, #e63946);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo span {
+            -webkit-text-fill-color: #e63946;
+        }
+        .sub {
+            color: rgba(255,255,255,0.3);
+            font-size: 14px;
+            margin-top: 8px;
+            z-index: 1;
+            letter-spacing: 2px;
+        }
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle 2s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.8); }
+            100% { opacity: 0.8; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg" id="bg">
+        <div class="stars" id="stars"></div>
+        <div class="logo">TT<span>Mem</span></div>
+        <div class="sub">🔥 ТВОЙ МЕССЕНДЖЕР</div>
+    </div>
+    <script>
+        const container = document.getElementById('stars');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+            container.appendChild(star);
+        }
+    </script>
+</body>
+</html>
